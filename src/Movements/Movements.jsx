@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Movements.css';
 
 const Movements = ({ movements: rawMovements, cuentas, setCuentas }) => {
