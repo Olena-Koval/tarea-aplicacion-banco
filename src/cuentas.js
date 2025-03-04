@@ -1,43 +1,32 @@
-const account1 = {
-    owner: 'Juan Sánchez',
-    movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
-    interestRate: 1.2, // %
-    pin: 1111,
-  }
-  
-  const account2 = {
-    owner: 'María Portazgo',
-    movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
-    interestRate: 1.5,
-    pin: 2222,
-  }
-  
-  const account3 = {
-    owner: 'Estefanía Pueyo',
-    movements: [200, -200, 340, -300, -20, 50, 400, -460],
-    interestRate: 0.7,
-    pin: 3333,
-  }
-  
-  const account4 = {
-    owner: 'Javier Rodríguez',
-    movements: [430, 1000, 700, 50, 90],
-    interestRate: 1,
-    pin: 4444,
-  }
-  
-  const accounts = [account1, account2, account3, account4]
-  
-  const createUsernames = function (accounts) {
-    accounts.forEach(function (account) {
-      account.username = account.owner // Juan Sánchez
-        .toLowerCase() // juan sánchez
-        .split(' ') // ['juan', 'sánchez']
-        .map((name) => name[0]) // ['j', 's']
-        .join('') // js (lo contrario que split)
-    })
-  }
-  createUsernames(accounts)
-  
-  export default accounts
-  
+// cuentas.js
+import { faker } from "@faker-js/faker"; // Importamos Faker.js
+
+// Función para generar una cuenta aleatoria
+const generarCuenta = () => {
+  return {
+    id: faker.string.uuid(),  // Generamos un ID único para cada cuenta
+    owner: faker.person.fullName(),  // Generamos un nombre completo aleatorio
+    movements: Array.from({ length: 8 }, () => faker.finance.amount(-1000, 5000, 2)),  // Generamos 8 movimientos aleatorios (positivos y negativos)
+    interestRate: faker.number.float({ min: 0.5, max: 5, precision: 0.1 }),  // Generamos una tasa de interés aleatoria
+    pin: faker.number.int({ min: 1000, max: 9999 }),  // Generamos un PIN aleatorio de 4 dígitos
+  };
+};
+
+// Generamos un array de cuentas (por ejemplo, 4 cuentas)
+const cuentas = Array.from({ length: 4 }, generarCuenta); // Generamos 4 cuentas aleatorias
+
+// Función para crear usernames a partir del nombre del propietario
+const createUsernames = (accounts) => {
+  accounts.forEach(function (account) {
+    account.username = account.owner
+      .toLowerCase()
+      .split(' ')
+      .map((name) => name[0])
+      .join('');
+  });
+};
+
+// Crear usernames para las cuentas generadas
+createUsernames(cuentas);
+
+export default cuentas;  // Exportamos las cuentas generadas para usarlas en otros archivos

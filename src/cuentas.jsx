@@ -1,26 +1,23 @@
+// Cuentas.jsx
 import React, { useState } from 'react';
+import cuentas from './cuentas';  // Importamos las cuentas generadas aleatoriamente
 
 const Cuentas = () => {
-  // Lista de cuentas de ejemplo, normalmente vendría de una API o de un estado global
-  const [cuentas, setCuentas] = useState([
-    { id: 1, nombre: "Cuenta A" },
-    { id: 2, nombre: "Cuenta B" },
-    { id: 3, nombre: "Cuenta C" }
-  ]);
+  const [cuentasList, setCuentasList] = useState(cuentas); // Inicializamos el estado con las cuentas importadas
 
   // Función para cerrar una cuenta
   const cerrarCuenta = (id) => {
-    // Actualiza el estado de las cuentas, eliminando la cuenta que coincide con el id
-    setCuentas(cuentas.filter(cuenta => cuenta.id !== id));
+    // Actualizamos el estado de las cuentas, eliminando la cuenta que coincide con el id
+    setCuentasList(cuentasList.filter(cuenta => cuenta.id !== id));
   };
 
   return (
     <div>
       <h1>Mis Cuentas</h1>
       <ul>
-        {cuentas.map(cuenta => (
+        {cuentasList.map(cuenta => (
           <li key={cuenta.id}>
-            {cuenta.nombre}
+            {cuenta.owner} (ID: {cuenta.id}) - Saldo: ${cuenta.movements.reduce((acc, mov) => acc + parseFloat(mov), 0).toFixed(2)}  {/* Calculamos el saldo sumando todos los movimientos */}
             <button onClick={() => cerrarCuenta(cuenta.id)}>Cerrar Cuenta</button>
           </li>
         ))}
