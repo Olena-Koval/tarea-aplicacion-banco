@@ -4,13 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
+    "dev": "vite",        // Ejecuta Vite en modo desarrollo
+    "build": "vite build", // Construye el proyecto para producción
+    "lint": "eslint .",    // Ejecuta ESLint para verificar el código
+    "preview": "vite preview" // Previsualiza el proyecto construido
+  }
+
   "dependencies": {
     "@faker-js/faker": "^9.5.1",
+    "moment": "^2.30.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
