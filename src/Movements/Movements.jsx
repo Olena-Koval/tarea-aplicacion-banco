@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Movements.css';
 
 const Movements = ({ movements: rawMovements, cuentas, setCuentas }) => {
-  // Mapeo de movimientos para determinar si es un depósito o una retirada
-  const movements = rawMovements.map(movement => ({
-    value: movement,
-    type: movement < 0 ? 'withdrawal' : 'deposit',
-    date: '24/01/2037'
-  }));
+  // Estado para almacenar los movimientos procesados como objetos con fecha
+  const [movements, setMovements] = useState(
+    rawMovements.map((movement, index) => ({
+      id: index + 1,  // Asignamos un ID único a cada movimiento (usamos el índice + 1)
+      tipo: movement < 0 ? 'withdrawal' : 'deposit',  // Si es negativo es retiro, si es positivo es depósito
+      monto: movement,
+      fecha: new Date()  // La fecha es la actual
+    }))
+  );
 
   // Función para transferir dinero entre cuentas
   const transferirDinero = (origenId, destinoId, monto) => {
@@ -29,6 +32,16 @@ const Movements = ({ movements: rawMovements, cuentas, setCuentas }) => {
 
     // Actualizar el estado de las cuentas
     setCuentas([...cuentas]);
+
+    // Agregar el movimiento de transferencia al historial
+    const newMovement = {
+      id: movements.length + 1, // ID único basado en la longitud del array de movimientos
+      tipo: 'transferencia',
+      monto: -monto,  // El movimiento de salida es negativo
+      fecha: new Date()
+    };
+
+    setMovements([...movements, newMovement]);
     alert(`Transferencia de $${monto} realizada con éxito`);
   };
 
@@ -36,12 +49,12 @@ const Movements = ({ movements: rawMovements, cuentas, setCuentas }) => {
     <div className="movements">
       <h2>Movimientos</h2>
       {movements.map((movement, index) => (
-        <div key={index} className="movements__row">
-          <div className={`movements__type movements__type--${movement.type}`}>
-            {movement.type === 'deposit' ? 'Deposit' : 'Withdrawal'}
+        <div key={movement.id} className="movements__row">
+          <div className={`movements__type movements__type--${movement.tipo}`}>
+            {movement.tipo === 'deposit' ? 'Depósito' : movement.tipo === 'withdrawal' ? 'Retiro' : 'Transferencia'}
           </div>
-          <div className="movements__date">{movement.date}</div>
-          <div className="movements__value">{movement.value}</div>
+          <div className="movements__date">{movement.fecha.toLocaleString()}</div> {/* Mostrar fecha en formato local */}
+          <div className="movements__value">{movement.monto}</div>
         </div>
       ))}
 
