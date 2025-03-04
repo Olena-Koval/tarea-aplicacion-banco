@@ -11,6 +11,9 @@ const Movements = ({ movements: rawMovements, cuentas, setCuentas }) => {
     date: moment().subtract(Math.floor(Math.random() * 30), 'days').toDate() // Asignamos una fecha aleatoria en los últimos 30 días
   }));
 
+  // Ordenar los movimientos por fecha de forma descendente (de más reciente a más antiguo)
+  const movimientosOrdenados = [...movements].sort((a, b) => b.date - a.date);
+
   // Función para transferir dinero entre cuentas
   const transferirDinero = (origenId, destinoId, monto) => {
     if (monto <= 0) return alert("La cantidad debe ser positiva");
@@ -37,7 +40,7 @@ const Movements = ({ movements: rawMovements, cuentas, setCuentas }) => {
   return (
     <div className="movements">
       <h2>Movimientos</h2>
-      {movements.map((movement, index) => (
+      {movimientosOrdenados.map((movement, index) => (
         <div key={index} className="movements__row">
           <div className={`movements__type movements__type--${movement.type}`}>
             {movement.type === 'deposit' ? 'Deposit' : 'Withdrawal'}
